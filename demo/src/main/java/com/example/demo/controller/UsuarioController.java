@@ -3,7 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.UserService;
+
 
 import java.util.List;
 
@@ -17,10 +21,13 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
-    public Usuario criarUsuario(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public  ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
+         Usuario savedUser = userService.saveUser(usuario);
+         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping
